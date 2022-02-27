@@ -151,8 +151,10 @@ function initializeApp() {
                     addRole()
                     break;
                 case 'Add an employee':
+                    addEmployee()
                     break;
                 case 'Update an employee role':
+                    updateEmployeeRole()
                     break;
                 case 'Quit':
                     process.exit()
@@ -200,6 +202,124 @@ function viewEmployees() {
     })
 }
 //end of display prompts
+
+function addDepartment() {
+    DepartmentPrompt()
+        .then(answer => {
+            // console.log(answer.addDepartment)
+
+            const sql = `INSERT INTO department (name) VALUES (?)`;
+            const params = answer.addDepartment;
+
+            db.query(sql, params, (err, result) => {
+                if (err) {
+                    console.log(err);
+                }
+                console.log('Added ' + params + ' to database.')
+                initializeApp();
+            })
+        })
+}
+
+function addRole() {
+    const sql = `SELECT * FROM department`;
+    db.query(sql, (err, rows) => {
+        if (err) {
+            console.log(err);
+        }
+        const departmentArray = [];
+
+        for (let i = 0; i < rows.length; i++) {
+            let newRows = {
+                value: rows[i].id,
+                name: rows[i].name
+            }
+            departmentArray.push(newRows)
+        }
+
+        RolePrompt(departmentArray)
+            .then(answer => {
+                const sql = `INSERT INTO role (title, salary, department_id) VALUES (?, ?, ?)`;
+                const params = [answer.addRole, answer.addSalary, answer.addDepartment];
+
+                db.query(sql, params, (err, result) => {
+                    if (err) {
+                        console.log(err);
+                    }
+                    console.log('Added ' + params[0] + ' to database.')
+                    initializeApp();
+                })
+            })
+
+    })
+}
+
+function addEmployee() {
+    const sql = `SELECT id, title FROM role`;
+    db.query(sql, (err, rows) => {
+        if (err) {
+            console.log(err);
+        }
+        const roleArray = [];
+
+        for (let i = 0; i < rows.length; i++) {
+            let newRows = {
+                value: rows[i].id,
+                name: rows[i].title
+            }
+            roleArray.push(newRows)
+        }
+
+        addEmployeePrompt(roleArray)
+            .then(answer => {
+                const sql = `INSERT INTO employee (first_name, last_name, role_id, manager_id) VALUES (?, ?, ?, ?)`;
+                const params = [answer.first, answer.last, answer.role, answer.manager];
+
+                db.query(sql, params, (err, result) => {
+                    if (err) {
+                        console.log(err);
+                    }
+                    console.log('Added ' + params[0] + ' ' + params[1] + ' to the database.')
+                   initializeApp();
+                })
+            })
+
+    })
+}
+
+function updateEmployeeRole() {
+    const sql = `SELECT id, first_name, last_name FROM employee`;
+    db.query(sql, (err, rows) => {
+        if (err) {
+            console.log(err);
+        }
+        const employeeArray = [];
+
+        for (let i = 0; i < rows.length; i++) {
+            let newRows = {
+                value: rows[i].id,
+                name: rows[i].first_name + " " + rows[i].last_name
+            }
+            employeeArray.push(newRows)
+        }
+
+        updateEmployeePrompt(employeeArray)
+            .then(answer => {
+                const sql = `UPDATE employee SET role_id = ? WHERE id = ? `;
+                const params = [answer.role, answer.employee];
+
+                db.query(sql, params, (err, result) => {
+                    if (err) {
+                        console.log(err);
+                    }
+                    console.log('employee role updated in database.')
+                    initializeApp();
+                })
+            })
+
+    })
+}
+
 
 
 initializeApp()

@@ -58,6 +58,62 @@ function RolePrompt(departmentArray) {
 }
 
 //Employee prompts
+function addEmployeePrompt(roleArray) {
+    return inquirer.prompt([
+        {
+            type: 'input',
+            name: 'first',
+            message: "Enter Employee's first name"
+        },
+        {
+            type: 'input',
+            name: 'last',
+            message: "Enter employee's last name"
+        },
+        {
+            type: 'list',
+            name: 'role',
+            message: "Select Employee's role",
+            choices: roleArray
+        },
+        {
+            type: 'list',
+            name: 'manager',
+            message: "Select Employee's manager",
+            choices: [
+                { value: 2, name: "Bob Builder" },
+                { value: 4, name: "Jake Paul" },
+                { value: 5, name: "Tom Cruise" },
+                { value: null , name: "TBD" }
+            ]
+        }
+    ])
+}
+
+//Update Employee Prompts
+function updateEmployeePrompt(employeeArray) {
+    return inquirer.prompt([
+        {
+            type: 'list',
+            name: 'employee',
+            message: "Select Employee you wish to update",
+            choices: employeeArray
+        },
+        {
+            type: 'list',
+            name: 'role',
+            message: "Assign new Employee role",
+            choices: [
+                { value: 1, name: "Sales Manager" },
+                { value: 2, name: "Sales Worker" },
+                { value: 3, name: "Engineering Manager" },
+                { value: 4, name: "Engineer" },
+                { value: 5, name: "Legal Manager" },
+                { value: 6, name: "Legal Worker" }
+            ]
+        }
+    ])
+}
 
 function initializeApp() {
     return inquirer.prompt([
@@ -103,3 +159,5 @@ function initializeApp() {
             }
         })
 }
+
+initializeApp()

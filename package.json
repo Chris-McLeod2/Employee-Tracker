@@ -18,6 +18,8 @@
   },
   "homepage": "https://github.com/Chris-McLeod2/Employee-Tracker#readme",
   "dependencies": {
-    "inquirer": "^8.2.0"
+    "console.table": "^0.10.0",
+    "inquirer": "^8.2.0",
+    "mysql2": "^2.3.3"
   }
 }

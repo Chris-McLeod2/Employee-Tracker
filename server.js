@@ -135,14 +135,14 @@ function initializeApp() {
     ])
         .then((answers) => {
             switch (answers.menu) {
-                case 'View all departments':
-                    displayDepartments()
+                case 'View departments':
+                    viewDepartments()
                     break;
-                case 'View all roles':
-                    displayRoles()
+                case 'View roles':
+                    viewRoles()
                     break;
                 case 'View all employees':
-                    displayEmployees()
+                    viewEmployees()
                     break;
                 case 'Add a department':
                     addDepartment()
@@ -159,5 +159,47 @@ function initializeApp() {
             }
         })
 }
+
+//display prompts
+function viewDepartments() {
+    const sql = `SELECT * FROM department`;
+    db.query(sql, (err, rows) => {
+        if (err) {
+            console.log(err);
+        }
+        console.table(rows);
+        initializeApp();
+    })
+}
+
+function viewRoles() {
+    const sql = `SELECT role.id, role.title, department.name AS department, role.salary
+                FROM role
+                LEFT JOIN department ON role.department_id = department.id`;
+    db.query(sql, (err, rows) => {
+        if (err) {
+            console.log(err);
+        }
+        console.table(rows);
+        initializeApp();
+    })
+}
+
+function viewEmployees() {
+    const sql = `SELECT employee.id, employee.first_name, employee.last_name, role.title, department.name AS department, role.salary, CONCAT (manager.first_name, " ", manager.last_name) AS manager
+                FROM employee
+                LEFT JOIN employee manager ON manager.id = employee.manager_id
+                LEFT JOIN role ON employee.role_id = role.id
+                LEFT JOIN department ON role.department_id = department.id`;
+    db.query(sql, (err, rows) => {
+        if (err) {
+            console.log(err);
+        }
+        console.table(rows);
+        initializeApp();
+    })
+}
+//end of display prompts
+
 
 initializeApp()

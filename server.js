@@ -50,7 +50,7 @@ db.connect(function(err) {
         name: "UserChoice"
       })
       .then(function(result) {
-        console.log("You entered: " + result.UserChoice);
+       
   
         switch (result.UserChoice) {
           case "Add department":
@@ -95,7 +95,7 @@ db.connect(function(err) {
     let query = "SELECT * FROM employee";
     db.query(query, function(err, res) {
       if (err) throw err;
-      console.table(res);
+      console.table(res)
       promptList();
     });
 
@@ -125,7 +125,6 @@ db.connect(function(err) {
   
         db.query("INSERT INTO role (title, salary, department_id) VALUES (?, ?, ?)", [answer.role, answer.newRoleSalary, answer.departmentID], function(err, res) {
           if (err) throw err;
-          console.table(res);
           promptList();
         });
       });
@@ -147,7 +146,6 @@ db.connect(function(err) {
 
         db.query("INSERT INTO department (name) VALUES (?)", [answer.departmentName] , function(err, res) {
             if (err) throw err;
-            console.table(res)
             promptList()
     })
     })
@@ -183,7 +181,6 @@ db.connect(function(err) {
         
        db.query("INSERT INTO employee (first_name, last_name, role_id, manager_id) VALUES (?, ?, ?, ?)", [answer.employeeFirstName, answer.eeLastName, answer.employeeID, answer.managerID], function(err, res) {
           if (err) throw err;
-          console.table(res);
           promptList();
         });
       });
@@ -197,7 +194,7 @@ db.connect(function(err) {
     let query = "SELECT * FROM department";
     db.query(query, function(err, res) {
       if (err) throw err;
-      console.table(res);
+      console.table(res)
       promptList();
     });
   
@@ -222,7 +219,6 @@ db.connect(function(err) {
    
        db.query('UPDATE employee SET role_id=? WHERE first_name= ?',[answer.updateRole, answer.updateEmployee],function(err, res) {
           if (err) throw err;
-          console.table(res);
           promstList();
         });
       });
@@ -234,7 +230,7 @@ db.connect(function(err) {
     let query = "SELECT * FROM role";
     db.query(query, function(err, res) {
       if (err) throw err;
-      console.table(res);
+      console.table(res)
       promptList();
     });
 
